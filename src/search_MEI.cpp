@@ -9,7 +9,7 @@
 // System libraries.
 #include <algorithm>
 #include <iostream>
-#include <math.h>
+#include <cmath>
 
 // Other libraries.
 #include "pindel.h"
@@ -60,7 +60,7 @@ bool is_concordant(const bam1_t* read, unsigned int insert_size)
 
    // Return true if insert size is as expected.  This definition of concordance is
    // equivalent to read-pair construction elsewhere in Pindel.
-   return (unsigned int) abs(read->core.isize) < read->core.l_qseq + 2 * insert_size;
+   return (unsigned int) fabs(read->core.isize) < read->core.l_qseq + 2 * insert_size;
 }
 
 
@@ -693,7 +693,7 @@ static int fetch_disc_read_callback(const bam1_t* alignment, MEI_data* mei_data,
          // Extra check for (very) large mapping distance.  This is done beside the check for read
          // discordance to speed up computation by ignoring signals from small structural variants.
          (alignment->core.tid != alignment->core.mtid ||
-          abs(alignment->core.pos - alignment->core.mpos) > userSettings->MIN_DD_MAP_DISTANCE)) {
+          fabs(alignment->core.pos - alignment->core.mpos) > userSettings->MIN_DD_MAP_DISTANCE)) {
 
       // Save alignment as simple_read object.
       std::string read_name = enrich_read_name(bam_get_qname(alignment), alignment->core.flag & BAM_FREAD1);

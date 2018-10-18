@@ -939,7 +939,7 @@ void build_record_RP (const bam1_t * r1, void *data)
    std::string Tag = (std::string) data_for_bam->Tag;
 
    if (!(r1_core->flag & BAM_FUNMAP || r1_core->flag & BAM_FMUNMAP)) { // both reads are mapped.
-      if ((r1_core->tid != r1_core->mtid) || abs(r1_core->isize) > r1_core->l_qseq + 2 * data_for_bam->InsertSize) {
+      if ((r1_core->tid != r1_core->mtid) || fabs(r1_core->isize) > r1_core->l_qseq + 2 * data_for_bam->InsertSize) {
          Temp_One_Read.ReadName = "";
          Temp_One_Read.ReadName.append ((const char *) bam_get_qname (r1));
          if (r1_core->flag & BAM_FREVERSE) {
@@ -1013,7 +1013,7 @@ void build_record_RP_Discovery (const bam1_t * r1, void *data)
       //    << (r1_core->flag & BAM_FREVERSE) << " "
       //    << (r1_core->flag & BAM_FMREVERSE) << std::endl;
       //}
-      if ((r1_core->tid != r1_core->mtid) || abs(r1_core->isize) > 3 * data_for_bam->InsertSize + 1000 || ((bool)(r1_core->flag & BAM_FREVERSE) == (bool)(r1_core->flag & BAM_FMREVERSE))) { // different chr or same strand or insert is too large
+      if ((r1_core->tid != r1_core->mtid) || fabs(r1_core->isize) > 3 * data_for_bam->InsertSize + 1000 || ((bool)(r1_core->flag & BAM_FREVERSE) == (bool)(r1_core->flag & BAM_FMREVERSE))) { // different chr or same strand or insert is too large
          //std::cout << "passed the test\n";
          //if ("read_10038" == read_name) {
          //    std::cout << "print " << read_name << " is on line 859." << std::endl;
