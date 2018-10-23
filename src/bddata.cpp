@@ -180,16 +180,16 @@ void SortRPByChrPos(std::vector <RP_READ> & Reads_RP) { // no interchromosome RP
 bool RecipicalOverlap(RP_READ & first, RP_READ & second)
 {
    int distance = 1000;
-   if ((int)cabs(first.PosA - first.PosA1) > distance) {
+   if (cabs(first.PosA - first.PosA1) > distance) {
       return false;
    }
-   if ((int)cabs(first.PosB - first.PosB1) > distance) {
+   if (cabs(first.PosB - first.PosB1) > distance) {
       return false;
    }
-   if ((int)cabs(second.PosA - second.PosA1) > distance) {
+   if (cabs(second.PosA - second.PosA1) > distance) {
       return false;
    }
-   if ((int)cabs(second.PosB - second.PosB1) > distance) {
+   if (cabs(second.PosB - second.PosB1) > distance) {
       return false;
    }
    float cutoff = 0.9;
@@ -718,12 +718,12 @@ void BDData::UpdateBD(ControlState & currentState)
                                << "\t" << secondPos2 - g_SpacerBeforeAfter
                                << "\t" << currentState.Reads_RP_Discovery[read_index].DB
                                << "\t" << secondPos2 - secondPos << "\t"
-                               << (int)cabs(secondPos - firstPos) << "\tSupport: " << currentState.Reads_RP_Discovery[read_index].NumberOfIdentical << "\t";
+                               << cabs(secondPos - firstPos) << "\tSupport: " << currentState.Reads_RP_Discovery[read_index].NumberOfIdentical << "\t";
                   DisplayBDSupportPerSample(currentState.Reads_RP_Discovery[read_index], RPoutputfile);
                   RPoutputfile << std::endl;
                   std::cout << "adding " << firstChrName << " " << ( (firstPos > g_SpacerBeforeAfter) ? firstPos - g_SpacerBeforeAfter : 1) << "\t" << firstPos2 - g_SpacerBeforeAfter << "\t" << currentState.Reads_RP_Discovery[read_index].DA << "\t" << firstPos2 - firstPos << "\t"
                             << "\t" << secondChrName << " " << ( (secondPos > g_SpacerBeforeAfter) ? secondPos - g_SpacerBeforeAfter : 1)  << "\t" << secondPos2 - g_SpacerBeforeAfter << "\t" << currentState.Reads_RP_Discovery[read_index].DB << "\t" << secondPos2 - secondPos << "\t"
-                            << " to BD events. " << (int)cabs(secondPos - firstPos) << " Support: " << currentState.Reads_RP_Discovery[read_index].NumberOfIdentical << std::endl;
+                            << " to BD events. " << cabs(secondPos - firstPos) << " Support: " << currentState.Reads_RP_Discovery[read_index].NumberOfIdentical << std::endl;
                }
             }
 

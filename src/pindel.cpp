@@ -129,7 +129,7 @@ const unsigned int AROUND_REGION_BUFFER = 10000; // how much earlier reads shoul
 
 const short MaxDI = 30;
 
-unsigned cabs(unsigned a)
+int cabs(int a)
 {
 	if(a>=0)
 		return a;
