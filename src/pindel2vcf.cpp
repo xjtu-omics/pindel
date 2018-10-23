@@ -78,10 +78,9 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#include <cmath> 
 
 #include <ctype.h> // tolower
-
+#include <math.h> //sqrt
 #include <stdlib.h> // for atoi
 #include <time.h>
 
@@ -100,6 +99,14 @@ string g_programName = "pindel2vcf";
 
 bool g_normalBaseArray[256];
 int g_sizeToWarnFor = 1000000;
+
+int cabs(int a)
+{
+	if(a>=0)
+		return a;
+	else
+		return (-1)*a;
+}
 
 // ################################
 // log\binom{n}{k}
@@ -204,7 +211,7 @@ double kt_fisher_exact(int n11, int n12, int n21, int n22, double *_left, double
       *two = 1.;
    }
    // adjust left and right
-   if (fabs(i - n11) < fabs(j - n11)) {
+   if (cabs(i - n11) < cabs(j - n11)) {
       right = 1. - left + q;
    } else {
       left = 1.0 - right + q;
@@ -2181,10 +2188,10 @@ void setParameters()
 /* 'throughFilter' checks whether the event is good enough to be written to the output file. */
 bool throughFilter(SVData sv)
 {
-   if (( g_par.minsize > 1 ) && ( fabs( sv.getSize()) < g_par.minsize ) ) {
+   if (( g_par.minsize > 1 ) && ( cabs( sv.getSize()) < g_par.minsize ) ) {
       return false;
    }
-   if (( g_par.maxsize > 0 ) && ( fabs( sv.getSize()) > g_par.maxsize ) ) {
+   if (( g_par.maxsize > 0 ) && ( cabs( sv.getSize()) > g_par.maxsize ) ) {
       return false;
    }
    if ( g_par.bothstrands && !sv.bothStrands() ) {

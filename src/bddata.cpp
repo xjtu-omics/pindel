@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <fstream>
-#include <cmath>
 #include "bddata.h"
 
 BDData::BDData() : 	m_currentWindow( &g_dummyChromosome, 0, 0 )
@@ -120,7 +119,7 @@ void BDData::loadBDFile(const std::string& filename)
 
          firstPos += g_SpacerBeforeAfter; // ??? ask Kai
          secondPos += g_SpacerBeforeAfter;
-         if (firstChrName == secondChrName && secondChrName != "" && fabs(firstPos - secondPos) < 500) {
+         if (firstChrName == secondChrName && secondChrName != "" && cabs(firstPos - secondPos) < 500) {
             continue;
          }
          if ( firstChrName!="" && secondChrName!="") {
@@ -181,16 +180,16 @@ void SortRPByChrPos(std::vector <RP_READ> & Reads_RP) { // no interchromosome RP
 bool RecipicalOverlap(RP_READ & first, RP_READ & second)
 {
    int distance = 1000;
-   if (fabs(first.PosA - first.PosA1) > distance) {
+   if ((int)cabs(first.PosA - first.PosA1) > distance) {
       return false;
    }
-   if (fabs(first.PosB - first.PosB1) > distance) {
+   if ((int)cabs(first.PosB - first.PosB1) > distance) {
       return false;
    }
-   if (fabs(second.PosA - second.PosA1) > distance) {
+   if ((int)cabs(second.PosA - second.PosA1) > distance) {
       return false;
    }
-   if (fabs(second.PosB - second.PosB1) > distance) {
+   if ((int)cabs(second.PosB - second.PosB1) > distance) {
       return false;
    }
    float cutoff = 0.9;
@@ -425,7 +424,7 @@ void ModifyRP(std::vector <RP_READ> & Reads_RP)
          Reads_RP[first].PosB = Reads_RP[first].PosB + Reads_RP[first].ReadLength;
          Reads_RP[first].PosB1 = Reads_RP[first].PosB1 + Reads_RP[first].ReadLength;
       }
-      if (Reads_RP[first].ChrNameA == Reads_RP[first].ChrNameB && fabs(Reads_RP[first].PosA - Reads_RP[first].PosB) < 500) {
+      if (Reads_RP[first].ChrNameA == Reads_RP[first].ChrNameB && cabs(Reads_RP[first].PosA - Reads_RP[first].PosB) < 500) {
          Reads_RP[first].Visited = true;
       }
       //std::cout << "Final: " << Reads_RP[first].ChrNameA << " " << Reads_RP[first].DA << " " << Reads_RP[first].PosA << "\t" << Reads_RP[first].ChrNameB << " " << Reads_RP[first].DB << " " << Reads_RP[first].PosB << std::endl;
@@ -719,12 +718,12 @@ void BDData::UpdateBD(ControlState & currentState)
                                << "\t" << secondPos2 - g_SpacerBeforeAfter
                                << "\t" << currentState.Reads_RP_Discovery[read_index].DB
                                << "\t" << secondPos2 - secondPos << "\t"
-                               << (int)fabs((int)secondPos - (int)firstPos) << "\tSupport: " << currentState.Reads_RP_Discovery[read_index].NumberOfIdentical << "\t";
+                               << (int)cabs(secondPos - firstPos) << "\tSupport: " << currentState.Reads_RP_Discovery[read_index].NumberOfIdentical << "\t";
                   DisplayBDSupportPerSample(currentState.Reads_RP_Discovery[read_index], RPoutputfile);
                   RPoutputfile << std::endl;
                   std::cout << "adding " << firstChrName << " " << ( (firstPos > g_SpacerBeforeAfter) ? firstPos - g_SpacerBeforeAfter : 1) << "\t" << firstPos2 - g_SpacerBeforeAfter << "\t" << currentState.Reads_RP_Discovery[read_index].DA << "\t" << firstPos2 - firstPos << "\t"
                             << "\t" << secondChrName << " " << ( (secondPos > g_SpacerBeforeAfter) ? secondPos - g_SpacerBeforeAfter : 1)  << "\t" << secondPos2 - g_SpacerBeforeAfter << "\t" << currentState.Reads_RP_Discovery[read_index].DB << "\t" << secondPos2 - secondPos << "\t"
-                            << " to BD events. " << (int)fabs((int)secondPos - (int)firstPos) << " Support: " << currentState.Reads_RP_Discovery[read_index].NumberOfIdentical << std::endl;
+                            << " to BD events. " << (int)cabs(secondPos - firstPos) << " Support: " << currentState.Reads_RP_Discovery[read_index].NumberOfIdentical << std::endl;
                }
             }
 
