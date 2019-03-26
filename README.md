@@ -1,8 +1,9 @@
 # Pindel
 
 ## Compiling 
+Before you compiling Pindel, you should ensure your system has installed zlib (https://www.zlib.net/).
 
-To compile Pindel you need three things: GNU Make and GCC (which usually are 
+Then, to compile Pindel you need three things: GNU Make and GCC (which usually are 
 already installed on Linux) and htslib. The last is not installed on Linux
 by default, but it can be retrieved with:
 
