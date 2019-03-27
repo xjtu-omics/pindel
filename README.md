@@ -7,7 +7,7 @@ Then, to compile Pindel you need three things: GNU Make and GCC (which usually a
 already installed on Linux) and htslib. The last is not installed on Linux
 by default, but it can be retrieved with:
 
-git clone https://github.com/samtools/htslib or We have integrated hstlib in pindel source, you can just use it.
+git clone https://github.com/samtools/htslib or We have integrated htslib in pindel source, you can just use it.
 
 htslib needs to be built before you can start installing Pindel.
 (Go to htslib's directory, and follow the directions
