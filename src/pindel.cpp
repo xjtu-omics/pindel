@@ -60,6 +60,7 @@
 #include "gz_line_reader.h"
 
 
+/*v Xiaofei Yang update build version, Jan 17 2020 */
 /*v Kai Ye update 0.2.4h, Oct 31 2011, update for MOSAIK */
 /*v EW update 0.2.4j, Pindel will now abort when insert size is set too small. */
 /*v Kai/EW update 0.2.4k, pindel will now give the consensus inserted sequence instead of always the first one. */
@@ -74,7 +75,8 @@
 /* EW: update 0.2.4s: bugfix for -p option of Pindel0.2.4r */
 /* EW: update 0.2.4t, updates now shown in RELEASE document in trunk directory */
 
-const std::string Pindel_Version_str = "Pindel version 0.2.5b9, 20160729.";
+//const std::string Pindel_Version_str = "Pindel version 0.2.5b9, 20160729.";
+const std::string Pindel_Version_str = "Pindel version 0.3, 20200117.";
 
 const Chromosome g_dummyChromosome("","");
 Genome g_genome;
