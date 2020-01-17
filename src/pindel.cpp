@@ -61,6 +61,8 @@
 
 
 /*v Xiaofei Yang update build version, Jan 17 2020 */
+/*v Fan Yang update abs() , Oct 23, 2018*/
+/*v Fan Yang add htslib, Oct 18, 2018 */
 /*v Kai Ye update 0.2.4h, Oct 31 2011, update for MOSAIK */
 /*v EW update 0.2.4j, Pindel will now abort when insert size is set too small. */
 /*v Kai/EW update 0.2.4k, pindel will now give the consensus inserted sequence instead of always the first one. */
