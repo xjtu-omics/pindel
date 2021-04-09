@@ -6,7 +6,8 @@
  Created by Eric-Wubbo Lameijer, section of Molecular Epidemiology, Leiden University Medical Center, March 3rd, 2011.
  e.m.w.lameijer@gmail.com
  +31(0)71-5 125 831
-
+ 
+ Version 0.6.4 [April 9th, 2021] fix reference file read part, trim the chromosome ID by Xiaofei Yang
  Version 0.6.3 [February 19th, 2014] Clearer text on usage of -P option
  Version 0.6.2 [December 12th, 2014] Now robust against fasta files that have non-standard line lengths (C++'s getline does not work well on lines of over a million characters)
  Version 0.6.1 [December 12th, 2014] Now has special code to recognize lines that contain SV-data, instead of relying on indirect establishment of their identity from context
@@ -94,7 +95,7 @@ const int FIRST_SAMPLE_INDEX = 32; // index of first sample name
 
 using namespace std;
 
-string g_versionString = "0.6.3";
+string g_versionString = "0.6.4";
 string g_programName = "pindel2vcf";
 
 bool g_normalBaseArray[256];
@@ -677,6 +678,12 @@ void Chromosome::readFromFile()
          refName += refLine[ counter++ ];
       } while ( counter<refLine.size() && (refLine[ counter ] != ' ') && (refLine[ counter ] != '\t') && (refLine[ counter ] != '\n') );
 
+      /* xiaofei add trim on refName */
+      const char* typeOfWhiteSpace = " \t\n\r\f\v";
+      refName.erase(refName.find_last_not_of(typeOfWhiteSpace) + 1);
+      refName.erase(0, refName.find_first_not_of(typeOfWhiteSpace));
+      /* xiaofei add trim end */
+
       if (refName == d_identifier ) {
          cout << "Reading chromosome " << refName << " into memory." << endl;
          targetChromosomeRead = true;
@@ -731,7 +738,6 @@ public:
 
 const string* Genome::getChromosome( const string& id )
 {
-
    for (int chromosomeIndex=0; chromosomeIndex<d_chromosomes.size(); chromosomeIndex++ ) {
       if ( id.compare( d_chromosomes[ chromosomeIndex ].getID() ) == 0 ) {
          return d_chromosomes[ chromosomeIndex ].getChromPtr();
@@ -1771,7 +1777,6 @@ void convertIndelToSVdata( InputReader& pindelInput, map< string, int>& sampleMa
    if (pindelInput.eof()) {
       return;
    }
-
    stringstream lineStream;
    lineStream << line;
    string svType = fetchElement( lineStream, 2 ); // to 2
@@ -1829,7 +1834,6 @@ void convertIndelToSVdata( InputReader& pindelInput, map< string, int>& sampleMa
       return;
    }
    svd.setSVlen( fetchElement( lineStream, 1 ) ); // to 3
-
    // get number(s) of NT bases added (two numbers for inversions!)
    string numNTaddedStr = fetchElement( lineStream, 2 ); // to 5
 
@@ -1851,7 +1855,6 @@ void convertIndelToSVdata( InputReader& pindelInput, map< string, int>& sampleMa
 
    string ntAdded = fetchElement( lineStream, 1 ); // to 6
    string ntInvAdded = "";
-
    // basically, there are two type of inversions:
    //	a) The 'alternatively called small deletions' INV 2 NT 2 "TG"
    // b) the regular inversions INV98 NT 0:60 "":"GCT"
@@ -1876,7 +1879,6 @@ void convertIndelToSVdata( InputReader& pindelInput, map< string, int>& sampleMa
       return;
    }
    const string* reference = genome.getChromosome( chromosomeID );
-   //cout << "reference is " << *reference << endl;
    if ( reference== NULL ) {
       cout << "Error! Reference chromosome \"" << chromosomeID << "\" not found!" << endl;
       exit(EXIT_FAILURE);
@@ -1887,6 +1889,8 @@ void convertIndelToSVdata( InputReader& pindelInput, map< string, int>& sampleMa
    int leftmostEndPos = atoi( fetchElement( lineStream, 1 ).c_str()); // now at position 11
    int leftmostStartPos = atoi (fetchElement( lineStream, 2 ).c_str());  // at position 13
    int rightmostEndPos = atoi (fetchElement( lineStream, 1 ).c_str()); // now at position 14
+
+
    svd.setBPrange( leftmostStartPos, rightmostEndPos );
    svd.setEnd( leftmostEndPos );
    svd.setHomlen( rightmostEndPos - leftmostEndPos );
@@ -1895,6 +1899,7 @@ void convertIndelToSVdata( InputReader& pindelInput, map< string, int>& sampleMa
       homSeq += (*reference)[ position ];
    }
    svd.setHomseq( homSeq );
+   
    if ( svType.compare("D")==0 ) {
       if (numNTadded==0 ) {
          svd.setSVtype( "DEL" );
